@@ -1,6 +1,6 @@
 # Countries-Explorer-Application-with-Weather-Integration
 
-# React + TypeScript + Vite
+# React + TypeScript + Vite + GraphSQL
 
 #run npm i
 #run npm run dev
