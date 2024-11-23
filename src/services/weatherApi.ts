@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const API_KEY = "d3dad534ad90c72808b4fbafa9d0036b";
 const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
@@ -13,8 +13,13 @@ export const fetchWeather = async (city: string) => {
       },
     });
     return response.data;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error fetching weather data:", error);
+    const axiosError = error as AxiosError;
+
+    if (axiosError.response && axiosError.response.status === 429) {
+      throw new Error("Rate limit exceeded. Please try again later.");
+    }
 
     if (axios.isAxiosError(error)) {
       if (error.response) {
@@ -22,6 +27,7 @@ export const fetchWeather = async (city: string) => {
           `Failed to fetch weather data: ${error.response.data?.message || "Unknown error"}`
         );
       } else if (error.request) {
+        
         throw new Error("Failed to fetch weather data: No response from server");
       }
     }

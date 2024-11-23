@@ -11,7 +11,7 @@ import {
 
 interface CountrySearchProps {
   setSelectedCountry: (country: Country | null) => void;
-  setInitialCountries: (countries: Country[]) => void; // New prop
+  setInitialCountries: (countries: Country[]) => void;
   filteredCountries: Country[];
 }
 
@@ -33,6 +33,11 @@ const CountrySearch: React.FC<CountrySearchProps> = ({
   const handleSearch = () => {
     setSearch(countryName);
   };
+
+  const handleClear = () => {
+    setCountryName('')
+    setSearch('')
+  }
 
   if (loading) return <p>{"Loading..."}</p>;
   if (error)
@@ -68,8 +73,11 @@ const CountrySearch: React.FC<CountrySearchProps> = ({
         <button type="button" onClick={handleSearch}>
           {"Search"}
         </button>
+        <button type="button" onClick={handleClear}>
+          {"Clear"}
+        </button>
       </div>
-      {filteredCountries.length > 0
+      {filteredCountries.length > 0 && !search
         ? filteredCountries.map((country: Country) => (
             <div
               style={{ cursor: "pointer" }}
